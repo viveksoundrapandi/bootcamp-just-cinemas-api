@@ -2,6 +2,7 @@ package spicinemas.api.db;
 
 import org.jooq.DSLContext;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import spicinemas.SpiCinemasApplication;
 import spicinemas.api.model.Movie;
 import spicinemas.api.type.MovieListingType;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -25,8 +28,6 @@ public class MovieRepositoryTest {
     @Autowired
     DSLContext dslContext;
 
-
-
     @Test
     public void shouldInsertUserInDb(){
         String movieName = "Infinity War";
@@ -37,4 +38,29 @@ public class MovieRepositoryTest {
         assertThat(actualMovie.getExperiences(), is(expectedMovie.getExperiences()));
         assertThat(actualMovie.getListingType(), is(expectedMovie.getListingType()));
     }
+
+    @Test
+    public void shouldReturnAllMoviesWithListingTypeNowShowing(){
+
+        Movie movie1 = new Movie("Infinity War", "okay", MovieListingType.NOW_SHOWING);
+        Movie movie2 = new Movie("Iron Man", "okay", MovieListingType.UPCOMING);
+        movieRepo.addMovie(movie1);
+        movieRepo.addMovie(movie2);
+        List<Movie> movies = movieRepo.getNowShowingMovies();
+        Assert.assertEquals("Total now showing movies should be 1",1, movies.size());
+    }
+
+    @Test
+    public void shouldReturnAMovieByName(){
+        Movie movie1 = new Movie("Infinity War", "okay", MovieListingType.NOW_SHOWING);
+        Movie movie2 = new Movie("Iron Man", "okay", MovieListingType.UPCOMING);
+        movieRepo.addMovie(movie1);
+        movieRepo.addMovie(movie2);
+        Movie movie = movieRepo.getMovie("Iron Man");
+        Assert.assertEquals("Get movie should return Iron Man","Iron Man", movie.getName());
+    }
+
+
+
+
 }
