@@ -4,5 +4,5 @@ services:
   postgres-ci:
     image: regsethu/bootcamp-postgres-dev:1.0.0
     ports:
-      - "7654:5432"
+      - "5432:5432"
     restart: always

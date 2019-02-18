@@ -8,5 +8,5 @@ security:
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/spicinemas
-    username: in-muhilvarnan
-    password:
+    username: spiuser
+    password: spiuser
